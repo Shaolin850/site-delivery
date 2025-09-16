@@ -1,0 +1,335 @@
+
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DeliveryX - Cardápio Extendido</title>
+  <meta name="description" content="Protótipo de site de delivery com cardápio extenso, carrinho, filtros e checkout.">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="brand-logo">DX</div>
+        <span>DeliveryX</span>
+        <span class="mini-pill">Beta</span>
+      </div>
+
+      <div class="search" role="search">
+        <span>🔎</span>
+        <input id="searchInput" type="text" placeholder="Busque por prato, restaurante ou cozinha..." aria-label="Buscar"/>
+        <span class="chip">Entrega 30-45m</span>
+        <span class="chip" id="toggleTheme" title="Alternar tema">🌓 Tema</span>
+      </div>
+
+      <div class="nav-actions">
+        <button class="btn ghost" id="btnLogin"><span>👤</span> <span class="label">Entrar</span></button>
+        <button class="btn" id="btnLocation"><span>📍</span> <span class="label">Definir local</span></button>
+        <button class="btn circle" id="btnCart" aria-label="Abrir carrinho">🛒</button>
+        <span class="badge" id="cartCount">0</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero container">
+    <div class="hero-card">
+      <div>
+        <div class="tag">Cupom do dia: BEMVINDO10</div>
+        <h1 class="hero-title">Mais de 350 opções para você escolher — rápido, interativo e delicioso.</h1>
+        <p class="hero-sub">Use filtros por categoria, avaliação, promoções e frete grátis. Adicione ao carrinho, aplique cupons e finalize em segundos.</p>
+        <div class="hero-actions">
+          <button class="btn primary" id="exploreBtn">Explorar restaurantes</button>
+          <button class="btn" id="promoBtn">Ver promoções</button>
+          <button class="btn success" id="openCheckout">Finalizar agora</button>
+        </div>
+        <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap">
+          <span class="mini-pill">Entrega grátis em pedidos a partir de R$ 49,90</span>
+          <span class="mini-pill">Programa de fidelidade</span>
+          <span class="mini-pill">Suporte 24/7</span>
+        </div>
+      </div>
+
+      <div class="hero-illustration">
+        <div class="card-stack">
+          <div class="stack-card">
+            <div class="flex gap-10">
+              <div class="food-icon">🍔</div>
+              <div>
+                <div style="font-weight:800">Smash Burger Pro</div>
+                <div class="muted mini">15–25 min • 4,8 ★</div>
+              </div>
+            </div>
+            <div class="tag">-20%</div>
+          </div>
+          <div class="stack-card">
+            <div class="flex gap-10">
+              <div class="food-icon">🍣</div>
+              <div>
+                <div style="font-weight:800">Sushi Prime</div>
+                <div class="muted mini">35–45 min • 4,9 ★</div>
+              </div>
+            </div>
+            <div class="tag" style="background: rgba(255,176,32,.15); color:#ffd27a; border-color:rgba(255,176,32,.35)">Frete Grátis</div>
+          </div>
+          <div class="stack-card">
+            <div class="flex gap-10">
+              <div class="food-icon">🌮</div>
+              <div>
+                <div style="font-weight:800">Taqueria Central</div>
+                <div class="muted mini">25–35 min • 4,6 ★</div>
+              </div>
+            </div>
+            <div class="tag" style="background: rgba(124,92,255,.18); color:#aea3ff; border-color:rgba(124,92,255,.4)">Combo do Chef</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filtros -->
+  <section class="container">
+    <div class="filters">
+      <div class="pillbar" id="categoryBar" aria-label="Categorias">
+        <span class="pill active" data-cat="all">Todos</span>
+        <span class="pill" data-cat="burger">Burgers</span>
+        <span class="pill" data-cat="pizza">Pizzas</span>
+        <span class="pill" data-cat="sushi">Sushi</span>
+        <span class="pill" data-cat="mex">Mexicano</span>
+        <span class="pill" data-cat="br">Brasileiro</span>
+        <span class="pill" data-cat="veg">Vegetariano</span>
+        <span class="pill" data-cat="dessert">Sobremesas</span>
+        <span class="pill" data-cat="drinks">Bebidas</span>
+        <span class="pill" data-cat="pasta">Massas</span>
+      </div>
+      <div class="pillbar">
+        <span class="pill" id="filterFast">Entrega Rápida</span>
+        <span class="pill" id="filterRating">4.5★+</span>
+        <span class="pill" id="filterPromo">Promoções</span>
+        <span class="pill" id="filterFrete">Frete Grátis</span>
+        <span class="pill" id="filterOpen">Aberto agora</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Grid de produtos -->
+  <main class="container">
+    <div class="grid" id="productGrid"></div>
+  </main>
+
+  <!-- Lojas / mapa -->
+  <section class="container">
+    <div class="grid">
+      <div class="col-6">
+        <div class="panel">
+          <h3 style="margin:0 0 10px 0">Lojas próximas</h3>
+          <div class="divider"></div>
+          <div class="grid" id="storeGrid"></div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="panel">
+          <h3 style="margin:0 0 10px 0">Área de entrega</h3>
+          <div class="divider"></div>
+          <div class="map">
+            <div>
+              <div style="text-align:center">🗺️ Mapa interativo (placeholder)</div>
+              <div class="mini" style="text-align:center; margin-top:6px">Integre Google Maps/Leaflet aqui</div>
+            </div>
+          </div>
+          <div class="flex gap-10" style="margin-top:10px">
+            <button class="btn" id="locDetect"><span>📡</span> Detectar localização</button>
+            <button class="btn" id="locSet"><span>📍</span> Informar endereço</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h4>DeliveryX</h4>
+        <p class="muted">O jeito mais rápido de matar sua fome. Compre, acompanhe e aproveite.</p>
+        <div class="socials">
+          <a href="#" aria-label="Instagram">📸</a>
+          <a href="#" aria-label="TikTok">🎵</a>
+          <a href="#" aria-label="Twitter">🐦</a>
+          <a href="#" aria-label="YouTube">▶️</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Atendimento</h4>
+        <p class="muted">Central 24/7 • Ajuda • Reembolsos • Parcerias</p>
+        <p class="muted">Política de Privacidade • Termos</p>
+      </div>
+      <div class="footer-col">
+        <h4>Para Restaurantes</h4>
+        <p class="muted">Cadastre seu restaurante • Ferramentas de gestão • Promoções</p>
+      </div>
+      <div class="footer-col">
+        <h4>Aplicativos</h4>
+        <p class="muted">iOS • Android • TV</p>
+        <div style="display:flex; gap:10px; margin-top:8px">
+          <button class="btn">📱 App Store</button>
+          <button class="btn">🤖 Play Store</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Carrinho -->
+  <aside class="cart" id="cart">
+    <div class="cart-head">
+      <div class="flex gap-10">
+        <strong>Seu carrinho</strong>
+        <span class="mini">Sessão demo</span>
+      </div>
+      <button class="btn circle" id="closeCart" aria-label="Fechar carrinho">✖️</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-foot">
+      <div class="rows">
+        <div class="row"><span>Subtotal</span> <strong id="subtotal">R$ 0,00</strong></div>
+        <div class="row"><span>Taxa de entrega</span> <strong id="taxa">R$ 6,90</strong></div>
+        <div class="row"><span>Desconto</span> <strong id="desconto">- R$ 0,00</strong></div>
+        <div class="divider"></div>
+        <div class="row" style="font-size:1.1rem"><span>Total</span> <strong id="total">R$ 6,90</strong></div>
+      </div>
+      <div class="input">
+        <label for="cupom">Cupom</label>
+        <div class="flex gap-6">
+          <input id="cupom" placeholder="Digite seu cupom" />
+          <button class="btn" id="aplicarCupom">Aplicar</button>
+        </div>
+        <small class="muted">Dica: use BEMVINDO10 ou FRETEGRATIS</small>
+      </div>
+      <div class="flex gap-6">
+        <button class="btn ghost" id="limparCarrinho">Limpar</button>
+        <button class="btn success" id="irCheckout">Ir para checkout</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Modal: checkout -->
+  <div class="modal-backdrop" id="checkoutModal">
+    <div class="modal" role="dialog" aria-labelledby="checkoutTitle" aria-modal="true">
+      <div class="modal-head">
+        <strong id="checkoutTitle">Finalizar pedido</strong>
+        <button class="btn circle" data-close="checkoutModal">✖️</button>
+      </div>
+      <div class="modal-body">
+        <div class="grid" style="grid-template-columns: repeat(12, 1fr); gap:10px">
+          <div class="col-6 input">
+            <label>Nome completo</label>
+            <input id="ckNome" placeholder="Seu nome"/>
+          </div>
+          <div class="col-6 input">
+            <label>Telefone</label>
+            <input id="ckTel" placeholder="(XX) XXXXX-XXXX"/>
+          </div>
+          <div class="col-6 input">
+            <label>Endereço</label>
+            <input id="ckEndereco" placeholder="Rua, número, complemento"/>
+          </div>
+          <div class="col-6 input">
+            <label>Bairro</label>
+            <input id="ckBairro" placeholder="Bairro"/>
+          </div>
+          <div class="col-6 input">
+            <label>Cidade</label>
+            <input id="ckCidade" placeholder="Cidade"/>
+          </div>
+          <div class="col-6 input">
+            <label>Pagamento</label>
+            <select id="ckPagamento">
+              <option value="pix">PIX</option>
+              <option value="credito">Cartão de crédito</option>
+              <option value="debito">Cartão de débito</option>
+              <option value="dinheiro">Dinheiro</option>
+            </select>
+          </div>
+          <div class="col-12 input">
+            <label>Observações</label>
+            <textarea id="ckObs" rows="3" placeholder="Ex.: tirar cebola, ponto da carne, etc."></textarea>
+          </div>
+        </div>
+        <div class="panel" id="resumoCheckout">
+          <div class="flex space">
+            <strong>Resumo</strong>
+            <span id="resumoTotal" class="tag">R$ 0,00</span>
+          </div>
+          <div id="resumoLista" class="mini" style="margin-top:8px"></div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn" data-close="checkoutModal">Cancelar</button>
+        <button class="btn success" id="confirmarPedido">Confirmar pedido</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: login -->
+  <div class="modal-backdrop" id="loginModal">
+    <div class="modal" role="dialog" aria-labelledby="loginTitle" aria-modal="true">
+      <div class="modal-head">
+        <strong id="loginTitle">Entrar</strong>
+        <button class="btn circle" data-close="loginModal">✖️</button>
+      </div>
+      <div class="modal-body">
+        <div class="input">
+          <label>E-mail</label>
+          <input id="loginEmail" type="email" placeholder="voce@email.com"/>
+        </div>
+        <div class="input">
+          <label>Senha</label>
+          <input id="loginSenha" type="password" placeholder="••••••••"/>
+        </div>
+        <div class="flex gap-6">
+          <button class="btn primary" id="doLogin">Entrar</button>
+          <button class="btn" id="openRegister">Cadastrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: cadastro -->
+  <div class="modal-backdrop" id="registerModal">
+    <div class="modal" role="dialog" aria-labelledby="registerTitle" aria-modal="true">
+      <div class="modal-head">
+        <strong id="registerTitle">Criar conta</strong>
+        <button class="btn circle" data-close="registerModal">✖️</button>
+      </div>
+      <div class="modal-body">
+        <div class="input">
+          <label>Nome</label>
+          <input id="regNome" placeholder="Seu nome completo"/>
+        </div>
+        <div class="input">
+          <label>E-mail</label>
+          <input id="regEmail" type="email" placeholder="voce@email.com"/>
+        </div>
+        <div class="input">
+          <label>Senha</label>
+          <input id="regSenha" type="password" placeholder="Crie uma senha"/>
+        </div>
+        <div class="input">
+          <label>Confirme a senha</label>
+          <input id="regSenha2" type="password" placeholder="Repita a senha"/>
+        </div>
+        <div>
+          <button class="btn success" id="doRegister">Cadastrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
